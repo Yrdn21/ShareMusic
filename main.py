@@ -1,17 +1,7 @@
 from fastapi import FastAPI
+from routers import album
 
 app = FastAPI()
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
-
-@app.get("suma {a} {b}")
-async def suma(a: int, b: int):
-    return a + b
+app.include_router(router=album.router, prefix="/album", tags=["album"])
