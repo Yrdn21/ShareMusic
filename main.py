@@ -12,4 +12,4 @@ async def root():
 async def say_hello(name: str):
     return {"message": f"Hello {name}"}
 
-#TODO el projecto lol
+#TODO el projecto lol xd
