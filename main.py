@@ -12,4 +12,6 @@ async def root():
 async def say_hello(name: str):
     return {"message": f"Hello {name}"}
 
-#TODO el projecto lol xd
+@app.get("suma {a} {b}")
+async def suma(a: int, b: int):
+    return a + b
