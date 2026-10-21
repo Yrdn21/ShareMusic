@@ -4,7 +4,6 @@ from enums.ActiveStatus import ActiveStatus
 
 
 class AlbumBase(BaseModel):
-    album_id: int #TODO auto_id
     title: str
     artist: str
     genre: Genre
@@ -13,5 +12,5 @@ class AlbumBase(BaseModel):
     status: ActiveStatus
 
 
-
-
+class AlbumID(AlbumBase):
+    album_id: int
