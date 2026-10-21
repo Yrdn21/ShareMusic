@@ -11,4 +11,4 @@ class Genre(str, Enum):
     VALLENATO = "Vallenato"
     METAL = "Metal"
     SALSA = "Salsa"
-    CLASICA = "Clasica"
+    ALTERNATIVE = "Alternative"
