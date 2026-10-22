@@ -38,4 +38,10 @@ def create_album(register: AlbumBase):
     write_album_into_csv(new_album_ID)
     return new_album_ID
 
-
+def read_one_album_by_id(album_id: AlbumID):
+    with open(data_base) as csvfile:
+        reader = csv.DictReader(csvfile, fieldnames = column_fields)
+        for row in reader:
+            if row["album_id"] == album_id:
+                return AlbumBase(**row)
+            return None
