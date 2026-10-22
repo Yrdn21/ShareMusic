@@ -33,8 +33,8 @@ def write_album_into_csv(register: AlbumID):
 
 
 def create_album(register: AlbumBase):
-    new_id =  album_auto_id()
-    new_album_ID = register.model_dump()
+    new_id = album_auto_id()
+    new_album_ID = AlbumID(album_id=new_id, **register.model_dump())
     write_album_into_csv(new_album_ID)
     return new_album_ID
 
