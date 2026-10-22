@@ -1,5 +1,5 @@
 from fastapi import APIRouter, status, HTTPException
-from models.album import AlbumBase, AlbumID
+from models.album import AlbumBase, AlbumID, AlbumStatusUpdate
 from data import album
 
 
@@ -30,3 +30,16 @@ def show_one_album(album_id: str):
 @router.get("/", status_code=status.HTTP_200_OK, response_model=list[AlbumID])
 def show_all_albums():
     return album.read_all_albums()
+
+
+
+
+@router.patch("/{album_id}", status_code=status.HTTP_200_OK)
+def update_album_status(album_id: str, status_update: AlbumStatusUpdate):
+    updated = album.update_album_status(album_id, status_update.status)
+    if not updated:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Album not found"
+        )
+    return {"message": "Album status updated successfully"}
