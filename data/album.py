@@ -4,6 +4,7 @@ from enums.genre import Genre
 from enums.ActiveStatus import ActiveStatus
 
 data_base = "album.csv"
+data_base_inactives = "album_inactives.csv"
 
 column_fields =[
     "album_id",
@@ -77,3 +78,33 @@ def update_album_status(album_id: str, new_status: str):
             writer = csv.DictWriter(csvfile, fieldnames=column_fields)
             writer.writerows(albums)
     return updated
+
+
+def delete_album(album_id: str):
+    active_albums=[]
+    album_to_archive = None
+
+    try:
+        with open (data_base, "r") as csvfile:
+            reader = csv.DictReader(csvfile, fieldnames=column_fields)
+            for row in reader:
+                if row["album_id"] == album_id:
+                    row["status"] = ActiveStatus.ACTIVE
+                    album_to_archive = AlbumID(**row)
+                else:
+                    active_albums.append(row)
+    except FileNotFoundError:
+        return False
+
+    if not album_to_archive:
+        return False
+
+    with open(data_base_inactives, mode="a", newline="") as history_file:
+        writer = csv.DictWriter(history_file, fieldnames=column_fields)
+        writer.writerow(album_to_archive.model_dump())
+
+        with open(data_base, mode="w", newline="") as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=column_fields)
+            writer.writerows(active_albums)
+
+        return True
