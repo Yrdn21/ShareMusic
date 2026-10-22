@@ -45,3 +45,14 @@ def read_one_album_by_id(album_id: str):
             if row["album_id"] == album_id:
                 return AlbumBase(**row)
         return None
+
+def read_all_albums():
+    albums = []
+    try:
+        with open(data_base, "r") as csvfile:
+            reader = csv.DictReader(csvfile, fieldnames=column_fields)
+            for row in reader:
+                albums.append(AlbumID(**row))
+    except (FileNotFoundError, ValueError):
+        return []
+    return albums
