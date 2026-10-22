@@ -11,7 +11,7 @@ column_fields =[
     "artist",
     "genre",
     "length",
-    "release_date",
+    "release_year",
     "status",
 ]
 

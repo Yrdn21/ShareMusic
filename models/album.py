@@ -8,7 +8,7 @@ class AlbumBase(BaseModel):
     artist: str
     genre: Genre
     length: int
-    release_date: str
+    release_year: int
     status: ActiveStatus = ActiveStatus.ACTIVE
 
 
