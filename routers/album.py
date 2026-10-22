@@ -42,4 +42,17 @@ def update_album_status(album_id: str, status_update: AlbumStatusUpdate):
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Album not found"
         )
-    return {"message": "Album status updated successfully"}
+    return {"message": "Album actualizado :D"}
+
+
+@router.delete("/{album_id}", status_code=status.HTTP_200_OK)
+def delete_album(album_id: str):
+    archived = album.delete_album(album_id)
+    if not archived:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Album not found in active list"
+        )
+    return {
+        "message": f"Album con la ID {album_id} eliminado"
+    }
