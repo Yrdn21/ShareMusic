@@ -1,5 +1,5 @@
 from fastapi import APIRouter, status, HTTPException
-from models.album import AlbumBase
+from models.album import AlbumBase, AlbumID
 from data import album
 
 
@@ -25,3 +25,8 @@ def show_one_album(album_id: str):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="No album found")
     else:
         return one_album
+
+
+@router.get("/", status_code=status.HTTP_200_OK, response_model=list[AlbumID])
+def show_all_albums():
+    return album.read_all_albums()
