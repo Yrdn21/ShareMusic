@@ -55,3 +55,25 @@ def read_all_albums():
     except (FileNotFoundError, ValueError):
         return []
     return albums
+
+
+def update_album_status(album_id: str, new_status: str):
+    albums = []
+    updated = False
+
+    try:
+        with open(data_base, "r") as csvfile:
+            reader = csv.DictReader(csvfile, fieldnames=column_fields)
+            for row in reader:
+                if row["album_id"] == album_id:
+                    row["status"] = new_status
+                    updated = True
+                albums.append(row)
+    except FileNotFoundError:
+        return False
+
+    if updated:
+        with open(data_base, mode="w", newline="") as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=column_fields)
+            writer.writerows(albums)
+    return updated
