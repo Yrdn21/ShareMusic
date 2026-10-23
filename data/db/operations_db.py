@@ -14,7 +14,7 @@ def create_album_db(new_album: AlbumBase):
 
     return album_db
 
-def show_all_animals_db():
+def show_all_albums_db():
     session= Session(engine)
 
     animals = session.exec(select(AlbumID)).all()
