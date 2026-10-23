@@ -80,6 +80,9 @@ def update_album_status(album_id: str, new_status: str):
     return updated
 
 
+import os
+
+
 def delete_album(album_id: str):
     active_albums = []
     album_to_archive = None
@@ -99,12 +102,19 @@ def delete_album(album_id: str):
     if not album_to_archive:
         return False
 
+    file_exists = os.path.exists(data_base_inactives) and os.path.getsize(data_base_inactives) > 0
+
     with open(data_base_inactives, mode="a", newline="") as history_file:
         writer = csv.DictWriter(history_file, fieldnames=column_fields)
+
+        if not file_exists:
+            writer.writeheader()
+
         writer.writerow(album_to_archive)
 
     with open(data_base, mode="w", newline="") as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=column_fields)
+        # writer.writeheader()
         writer.writerows(active_albums)
 
     return True
