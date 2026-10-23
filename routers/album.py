@@ -29,3 +29,9 @@ def show_one_album_by_id(id: str):
 @router.patch("/{id}", status_code=status.HTTP_200_OK, response_model=AlbumID)
 def update_album_by_id(id: str, new_status: AlbumStatusUpdate):
     return update_album_db(id, new_status)
+
+
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_album_by_id(id: str):
+    delete_album_db(id)
+    return show_one_album_db(id)
