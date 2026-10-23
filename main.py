@@ -12,4 +12,3 @@ def on_startup():
 
 
 app.include_router(router=album.router, prefix="/album", tags=["album"])
-
