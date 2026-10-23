@@ -9,6 +9,8 @@ class AlbumBase(BaseModel):
     genre: Genre
     release_year: int
     status: ActiveStatus = ActiveStatus.ACTIVE
+    price: float
+    edition: str
 
 
 class AlbumStatusUpdate(BaseModel):
