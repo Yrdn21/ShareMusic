@@ -14,6 +14,13 @@ def create_album_db(new_album: AlbumBase):
 
     return album_db
 
+def show_all_animals_db():
+    session= Session(engine)
+
+    animals = session.exec(select(AlbumID)).all()
+    session.close()
+    return animals
+
 def show_one_album_db(album_id: int):
     session= Session(engine)
     album_db = session.get(AlbumID, album_id)
