@@ -27,8 +27,11 @@ def album_auto_id():
 
 
 def write_album_into_csv(register: AlbumID):
+    file_exits = os.path.exists(data_base) and os.path.getsize(data_base) > 0
     with open(data_base, mode="a", newline="") as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=column_fields,)
+        if not file_exits:
+            writer.writeheader()
         writer.writerow(register.model_dump())
 
 
