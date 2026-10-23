@@ -48,6 +48,16 @@ def create_album(register: AlbumBase):
 
 
 
+
+def read_all_albums():
+    with open(data_base) as csvfile:
+        reader = csv.DictReader(csvfile, fieldnames=column_fields)
+
+        next(reader, None)
+        return [AlbumID(**row) for row in reader]
+
+
+
 def read_one_album_by_id(album_id: str):
     with open(data_base) as csvfile:
         reader = csv.DictReader(csvfile, fieldnames=column_fields)
