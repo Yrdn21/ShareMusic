@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from enums.genre import Genre
 from enums.ActiveStatus import ActiveStatus
+from enums.editions import Edition
 
 
 class AlbumBase(BaseModel):
@@ -9,8 +10,7 @@ class AlbumBase(BaseModel):
     genre: Genre
     release_year: int
     status: ActiveStatus = ActiveStatus.ACTIVE
-    price: float
-    edition: str
+    edition: Edition = Edition.STANDARD
 
 
 class AlbumStatusUpdate(BaseModel):

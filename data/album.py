@@ -15,7 +15,6 @@ column_fields = [
     "genre",
     "release_year",
     "status",
-    "price",
     "edition",
 ]
 
