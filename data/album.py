@@ -1,6 +1,7 @@
 import csv
 import os.path
 
+from enums.ActiveStatus import ActiveStatus
 from models.album import AlbumBase, AlbumID
 
 
@@ -65,3 +66,17 @@ def read_one_album_by_id(album_id: str):
             if row["album_id"] == album_id:
                 return AlbumBase(**row)
         return None
+
+
+def find_album_by_name(album_name: str):
+    try:
+        with open(data_base) as csvfile:
+            reader = csv.DictReader(csvfile, fieldnames=column_fields)
+            next(reader, None)
+
+            for row in reader:
+                if row["title"].lower() == album_name.lower():
+                    return AlbumID(**row)
+    except FileNotFoundError:
+        return None
+    return None
