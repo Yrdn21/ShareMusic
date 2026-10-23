@@ -32,7 +32,6 @@ def write_album_into_csv(register: AlbumID):
     file_exists = os.path.isfile(data_base) and os.path.getsize(data_base) > 0
     with open(data_base, mode="a", newline="") as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=column_fields)
-        writer.writerow(register.model_dump())
 
         if not file_exists:
             writer.writeheader()
