@@ -24,3 +24,8 @@ def show_one_album_by_id(id: str):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Album not found")
     else:
         return one_album
+
+
+@router.patch("/{id}", status_code=status.HTTP_200_OK, response_model=AlbumID)
+def update_album_by_id(id: str, new_status: AlbumStatusUpdate):
+    return update_album_db(id, new_status)
