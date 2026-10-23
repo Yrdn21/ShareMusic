@@ -15,3 +15,12 @@ def create_album(new_album: AlbumBase):
 @router.get("/", status_code=status.HTTP_200_OK, response_model=list[AlbumID])
 def show_all_albums():
     return show_all_albums_db()
+
+
+@router.get("/{id}", status_code=status.HTTP_200_OK, response_model=AlbumID)
+def show_one_album_by_id(id: str):
+    one_album = show_one_album_db(id)
+    if not one_album:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Album not found")
+    else:
+        return one_album
