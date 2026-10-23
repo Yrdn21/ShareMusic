@@ -1,4 +1,5 @@
 from sqlmodel import SQLModel, create_engine, Session
+from models.album import AlbumID
 
 
 database_name = "album.db"
