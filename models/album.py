@@ -1,9 +1,12 @@
 from pydantic import BaseModel
+from typing import Optional
+from sqlmodel import Field, SQLModel
+
 from enums.genre import Genre
 from enums.ActiveStatus import ActiveStatus
 
 
-class AlbumBase(BaseModel):
+class AlbumBase(SQLModel):
     title: str
     artist: str
     genre: Genre
@@ -11,9 +14,9 @@ class AlbumBase(BaseModel):
     status: ActiveStatus = ActiveStatus.ACTIVE
 
 
-class AlbumStatusUpdate(BaseModel):
+class AlbumStatusUpdate(SQLModel):
     status: ActiveStatus
 
 
-class AlbumID(AlbumBase):
-    album_id: int
+class AlbumID(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
