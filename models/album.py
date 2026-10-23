@@ -18,5 +18,5 @@ class AlbumStatusUpdate(SQLModel):
     status: ActiveStatus
 
 
-class AlbumID(SQLModel, table=True):
+class AlbumID(AlbumBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
