@@ -81,16 +81,16 @@ def update_album_status(album_id: str, new_status: str):
 
 
 def delete_album(album_id: str):
-    active_albums=[]
+    active_albums = []
     album_to_archive = None
 
     try:
-        with open (data_base, "r") as csvfile:
+        with open(data_base, "r") as csvfile:
             reader = csv.DictReader(csvfile, fieldnames=column_fields)
             for row in reader:
-                if row["album_id"] == album_id:
-                    row["status"] = ActiveStatus.ACTIVE
-                    album_to_archive = AlbumID(**row)
+                if str(row["album_id"]) == str(album_id):
+                    row["status"] = ActiveStatus.INACTIVE.value
+                    album_to_archive = row
                 else:
                     active_albums.append(row)
     except FileNotFoundError:
@@ -101,10 +101,10 @@ def delete_album(album_id: str):
 
     with open(data_base_inactives, mode="a", newline="") as history_file:
         writer = csv.DictWriter(history_file, fieldnames=column_fields)
-        writer.writerow(album_to_archive.model_dump())
+        writer.writerow(album_to_archive)
 
-        with open(data_base, mode="w", newline="") as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=column_fields)
-            writer.writerows(active_albums)
+    with open(data_base, mode="w", newline="") as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=column_fields)
+        writer.writerows(active_albums)
 
-        return True
+    return True
