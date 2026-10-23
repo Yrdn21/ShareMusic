@@ -42,7 +42,7 @@ def update_album_db(album_id: int, status:AlbumStatusUpdate):
 
 def delete_album_db(album_id: int):
     session= Session(engine)
-    update_album_db(album_id, status=ActiveStatus.ActiveStatus.INACTIVE)
+    update_album_db(album_id, status=ActiveStatus.INACTIVE)
     session.commit()
     session.close()
 
