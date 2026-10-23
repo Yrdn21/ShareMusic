@@ -6,7 +6,7 @@ from .album import engine
 
 def create_album_db(new_album: AlbumBase):
     session = Session(engine)
-    album_db = AlbumID.model_validate(new_album)
+    album_db = AlbumID(**new_album.model_dump())
     session.add(album_db)
     session.commit()
     session.refresh(album_db)
