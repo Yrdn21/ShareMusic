@@ -9,9 +9,8 @@ class AlbumBase(BaseModel):
     artist: str
     genre: Genre
     release_year: int
-    status: ActiveStatus = ActiveStatus.ACTIVE
     edition: Edition = Edition.STANDARD
-
+    status: ActiveStatus = ActiveStatus.ACTIVE
 
 class AlbumStatusUpdate(BaseModel):
     status: ActiveStatus
