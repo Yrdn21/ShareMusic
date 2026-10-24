@@ -19,3 +19,7 @@ class AlbumStatusUpdate(BaseModel):
 
 class AlbumID(AlbumBase):
     album_id: int
+
+
+class AlbumEditionUpdate(BaseModel):
+    edition: Edition
