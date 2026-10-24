@@ -1,5 +1,7 @@
 from fastapi import APIRouter, status, HTTPException
-from models.album import AlbumBase, AlbumID, AlbumEditionUpdate
+
+from enums.ActiveStatus import ActiveStatus
+from models.album import AlbumBase, AlbumID, AlbumEditionUpdate, AlbumStatusUpdate
 from data import album
 
 album_list: list[AlbumBase] = []
@@ -51,3 +53,14 @@ def update_album_status(album_id: str, new_edition: AlbumEditionUpdate):
         raise HTTPException(status_code = status. HTTP_404_NOT_FOUND, detail = "Album not found")
 
     return updated
+
+
+
+@router.delete("/{album_id]/delete", status_code=status.HTTP_204_NO_CONTENT, response_model=AlbumID)
+def delete_album_status(album_id: str):
+    delete = album.delete_album(album_id)
+
+    if not delete:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Album not found")
+
+    return delete
