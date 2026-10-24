@@ -81,3 +81,18 @@ def find_album_by_name(album_name: str):
     except FileNotFoundError:
         return None
     return None
+
+
+def update_album_edition(album:id, new_edition: str):
+    try:
+        with open(data_base) as csvfile:
+            reader =csv.DictReader(csvfile, fieldnames=column_fields)
+            next(reader, None)
+
+            for row in reader:
+                if row["album_id"] == album.id:
+                    row["edition"] = new_edition:
+                    return AlbumID(**row)
+    except FileNotFoundError:
+        return None
+    return None
