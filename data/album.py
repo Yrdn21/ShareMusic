@@ -127,7 +127,8 @@ def delete_album(album_id: str):
                     row["status"] = ActiveStatus.INACTIVE.value
                     deleted_album = AlbumID(**row)
 
-                all_albums.append(row)
+                else:
+                    all_albums.append(row)
 
         if deleted_album:
             with open(data_base, mode = "w", newline="") as csvfile:
