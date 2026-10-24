@@ -84,6 +84,9 @@ def find_album_by_name(album_name: str):
 
 
 def update_album_edition(album:id, new_edition: str):
+    updated_album=None
+    all_albums=[]
+
     try:
         with open(data_base) as csvfile:
             reader =csv.DictReader(csvfile, fieldnames=column_fields)
@@ -91,8 +94,16 @@ def update_album_edition(album:id, new_edition: str):
 
             for row in reader:
                 if row["album_id"] == album.id:
-                    row["edition"] = new_edition:
-                    return AlbumID(**row)
+                    row["edition"] = new_edition
+                    updated_album =  AlbumID(**row)
+
+            all_albums.append(row)
+
+        if updated_album:
+            with open(data_base, mode="w", newline="") as csvfile:
+                writer = csv.DictWriter(csvfile, fieldnames=column_fields)
+                writer.writeheader()
+                writer.writerows(all_albums)
+
     except FileNotFoundError:
-        return None
-    return None
+        return updated_album
