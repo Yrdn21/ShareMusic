@@ -43,6 +43,7 @@ def show_one_album(album_id: str):
 
 
 
+@router.patch("/{album_id}/edition", status_code=status.HTTP_200_OK, response_model=AlbumEditionUpdate)
 def update_album_status(album_id: str, new_edition: AlbumEditionUpdate):
     updated = album.update_album_edition(album_id, new_edition.edition.value)
 
