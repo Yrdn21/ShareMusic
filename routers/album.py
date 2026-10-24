@@ -18,7 +18,7 @@ def create_album(new_album: AlbumBase):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Album not found")
 
 
-@router.get("/", status_code=status.HTTP_200_OK,response_model=list[AlbumID])
+@router.get("/show", status_code=status.HTTP_200_OK,response_model=list[AlbumID])
 def show_all_albums():
     albums = album.read_all_albums()
     return albums
@@ -56,7 +56,7 @@ def update_album_status(album_id: str, new_edition: AlbumEditionUpdate):
 
 
 
-@router.delete("/{album_id]/delete", status_code=status.HTTP_204_NO_CONTENT, response_model=AlbumID)
+@router.delete("/{album_id}", status_code=status.HTTP_200_OK, response_model=AlbumID)
 def delete_album_status(album_id: str):
     delete = album.delete_album(album_id)
 
