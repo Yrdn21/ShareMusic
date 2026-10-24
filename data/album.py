@@ -1,12 +1,14 @@
 import csv
 import os.path
 
+from starlette.exceptions import HTTPException
+
 from enums.ActiveStatus import ActiveStatus
 from models.album import AlbumBase, AlbumID
 
 
 data_base = "album.csv"
-
+delete_data_base = "delete_albums.csv"
 
 column_fields = [
     "album_id",
@@ -109,3 +111,42 @@ def update_album_edition(album_id: str, new_edition: str):
 
     except FileNotFoundError:
         return updated_album
+
+
+def delete_album(album_id: str):
+    deleted_album=None
+    all_albums=[]
+
+    try:
+        with open(data_base) as csvfile:
+            reader = csv.DictReader(csvfile, fieldnames=column_fields)
+            next(reader, None)
+
+            for row in reader:
+                if row["album_id"] == album_id:
+                    row["status"] = ActiveStatus.INACTIVE.value
+                    deleted_album = AlbumID(**row)
+
+                all_albums.append(row)
+
+        if deleted_album:
+            with open(data_base, mode = "w", newline="") as csvfile:
+                writer = csv.DictWriter(csvfile, fieldnames=column_fields)
+                writer.writeheader()
+                writer.writerows(all_albums)
+
+
+            file_exists = os.path.isfile(delete_data_base) and os.path.getsize(delete_data_base) > 0
+
+            with open(delete_data_base, mode="a", newline="") as csvfile:
+                writer = csv.DictWriter(csvfile, fieldnames=column_fields)
+
+                if not file_exists:
+                    writer.writeheader()
+
+                writer.writerow(deleted_album.model_dump())
+
+            return deleted_album
+
+    except FileNotFoundError:
+        return None
