@@ -14,6 +14,7 @@ column_fields = [
     "album_id",
     "title",
     "artist",
+    "songs",
     "genre",
     "release_year",
     "edition",
