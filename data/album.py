@@ -1,5 +1,6 @@
 import csv
 import os.path
+import json
 
 from starlette.exceptions import HTTPException
 
@@ -14,6 +15,7 @@ column_fields = [
     "album_id",
     "title",
     "artist",
+    "songs",
     "genre",
     "release_year",
     "edition",
@@ -34,8 +36,15 @@ def album_auto_id():
 
 def write_album_into_csv(register: AlbumID):
     file_exists = os.path.isfile(data_base) and os.path.getsize(data_base) > 0
+
+    data = register.model_dump()
+
+    data["artist"] = json.dumps(data["artist"])
+    data["songs"] = json.dumps(data["songs"])
+
     with open(data_base, mode="a", newline="") as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=column_fields)
+
 
         if not file_exists:
             writer.writeheader()
@@ -54,11 +63,19 @@ def create_album(register: AlbumBase):
 
 
 def read_all_albums():
-    with open(data_base) as csvfile:
-        reader = csv.DictReader(csvfile, fieldnames=column_fields)
+    try:
+        with open(data_base) as csvfile:
+            reader = csv.DictReader(csvfile, fieldnames=column_fields)
+            next(reader, None)
 
-        next(reader, None)
-        return [AlbumID(**row) for row in reader]
+            albums = []
+            for row in reader:
+                row["artist"] = json.loads(row["artist"])
+                row["songs"] = json.loads(row["songs"])
+
+            return albums
+    except (FileNotFoundError, ValueError):
+        return []
 
 
 def show_all_deleted_albums():
