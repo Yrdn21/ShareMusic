@@ -49,7 +49,7 @@ def write_album_into_csv(register: AlbumID):
         if not file_exists:
             writer.writeheader()
 
-        writer.writerow(register.model_dump())
+        writer.writerow(data)
 
 
 
@@ -72,6 +72,7 @@ def read_all_albums():
             for row in reader:
                 row["artist"] = json.loads(row["artist"])
                 row["songs"] = json.loads(row["songs"])
+                albums.append(AlbumID(**row))
 
             return albums
     except (FileNotFoundError, ValueError):
