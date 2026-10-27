@@ -50,7 +50,7 @@ def write_album_into_csv(register: AlbumID):
         data["artist_name"] = artist_data["name"]
         data["artist_country"] = artist_data["country"]
 
-        writer.writerow(register.model_dump())
+        writer.writerow(data)
 
 
 
