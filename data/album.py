@@ -208,7 +208,7 @@ def delete_album(album_id: str):
                         "name": artist_name,
                         "country": artist_country
                     }
-                    deleted_album = AlbumID(**row)
+                    deleted_album = AlbumID(**row_for_model)
 
                 else:
                     all_albums.append(row)
