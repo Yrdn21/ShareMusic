@@ -144,6 +144,15 @@ def update_album_edition(album_id: str, new_edition: str):
             for row in reader:
                 if row["album_id"] == album_id:
                     row["edition"] = new_edition
+
+                    row_for_model = row.copy()
+                    artist_name = row_for_model.pop("artist_name")
+                    artist_country = row_for_model.pop("artist_country")
+
+                    row_for_model["artist"] = {
+                        "name": artist_name,
+                        "country": artist_country
+                    }
                     updated_album =  AlbumID(**row)
 
                 all_albums.append(row)
