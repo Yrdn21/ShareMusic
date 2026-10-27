@@ -24,6 +24,12 @@ def show_all_albums():
     return albums
 
 
+@router.get("/history", status_code=status.HTTP_200_OK,response_model=list[AlbumID] )
+def show_deleted_albums():
+    delete_ones= album.show_all_deleted_albums()
+    return delete_ones
+
+
 
 @router.get(path="/search", status_code=status.HTTP_200_OK, response_model=AlbumID)
 def show_one_album_by_Name(album_name: str):
