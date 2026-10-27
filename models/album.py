@@ -3,13 +3,13 @@ from enums.genre import Genre
 from enums.ActiveStatus import ActiveStatus
 from enums.editions import Edition
 from models.artist import Artist
-from models.songs import Song
+
 
 
 class AlbumBase(BaseModel):
     title: str
     artist: Artist
-    songs: list[Song] = []
+    songs: str
     genre: Genre
     release_year: int
     edition: Edition = Edition.STANDARD
