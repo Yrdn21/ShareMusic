@@ -13,7 +13,8 @@ delete_data_base = "delete_albums.csv"
 column_fields = [
     "album_id",
     "title",
-    "artist",
+    "artist_name",
+    "artist_country",
     "songs",
     "genre",
     "release_year",
@@ -26,6 +27,7 @@ def album_auto_id():
     try:
         with open(data_base, "r") as csvfile:
             reader = csv.DictReader(csvfile, fieldnames=column_fields)
+            next(reader, None)
             max_id = max(int(row["album_id"]) for row in reader)
             return max_id + 1
     except (FileNotFoundError, ValueError):
@@ -40,6 +42,13 @@ def write_album_into_csv(register: AlbumID):
 
         if not file_exists:
             writer.writeheader()
+
+        data = register.model_dump()
+
+        artist_data = data.pop("artist")
+
+        data["artist_name"] = artist_data["name"]
+        data["artist_country"] = artist_data["country"]
 
         writer.writerow(register.model_dump())
 
