@@ -110,6 +110,7 @@ def read_one_album_by_id(album_id: str):
     try:
         with open(data_base) as csvfile:
             reader = csv.DictReader(csvfile, fieldnames=column_fields)
+            next(reader, None)
             for row in reader:
                 if row["album_id"] == album_id:
 
@@ -120,7 +121,7 @@ def read_one_album_by_id(album_id: str):
                         "name": artist_name,
                         "country": artist_country
                     }
-                    return AlbumBase(**row)
+                    return AlbumID(**row)
             return None
     except (FileNotFoundError, ValueError):
         return None
@@ -130,8 +131,9 @@ def find_album_by_name(album_name: str):
     try:
         with open(data_base) as csvfile:
             reader = csv.DictReader(csvfile, fieldnames=column_fields)
+            next(reader, None)
             for row in reader:
-                if row["title"].lower == album_name.lower:
+                if row["title"].lower() == album_name.lower():
                     artist_name = row.pop("artist_name")
                     artist_country = row.pop("artist_country")
 
