@@ -97,12 +97,21 @@ def show_all_deleted_albums():
 
 
 def read_one_album_by_id(album_id: str):
-    with open(data_base) as csvfile:
-        reader = csv.DictReader(csvfile, fieldnames=column_fields)
-        for row in reader:
-            if row["album_id"] == album_id:
-                return AlbumBase(**row)
+    try:
+        with open(data_base) as csvfile:
+            reader = csv.DictReader(csvfile, fieldnames=column_fields)
+            next(reader, None)
+
+            for row in reader:
+                if row["album_id"] == album_id:
+                    row["artist"] = json.loads(row["artist"])
+                    row["songs"] = json.loads(row["songs"])
+                    return AlbumBase(**row)
+            return None
+
+    except FileNotFoundError:
         return None
+
 
 
 def find_album_by_name(album_name: str):
