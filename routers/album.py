@@ -21,13 +21,19 @@ def create_album(new_album: AlbumBase):
 @router.get("/show", status_code=status.HTTP_200_OK,response_model=list[AlbumID])
 def show_all_albums():
     albums = album.read_all_albums()
-    return albums
+    if albums:
+        return albums
+    else:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No albums found yet")
 
 
 @router.get("/history", status_code=status.HTTP_200_OK,response_model=list[AlbumID] )
 def show_deleted_albums():
     delete_ones= album.show_all_deleted_albums()
-    return delete_ones
+    if delete_ones:
+        return delete_ones
+    else:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No delete albums yet")
 
 
 
