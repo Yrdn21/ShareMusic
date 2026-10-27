@@ -47,7 +47,7 @@ def show_one_album_by_Name(album_name: str):
 
 
 
-@router.get("/{album_id}", status_code=status.HTTP_200_OK, response_model=AlbumBase)
+@router.get("/{album_id}", status_code=status.HTTP_200_OK, response_model=AlbumID)
 def show_one_album(album_id: str):
     one_album = album.read_one_album_by_id(album_id)
     if not one_album:
