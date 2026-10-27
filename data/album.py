@@ -172,6 +172,7 @@ def update_album_edition(album_id: str, new_edition: str):
 def delete_album(album_id: str):
     deleted_album=None
     all_albums=[]
+    delete_row = None
 
     try:
         with open(data_base) as csvfile:
@@ -181,12 +182,23 @@ def delete_album(album_id: str):
             for row in reader:
                 if row["album_id"] == album_id:
                     row["status"] = ActiveStatus.INACTIVE.value
+
+                    delete_row = row.copy()
+
+                    row_for_model = row.copy()
+                    artist_name = row_for_model.pop("artist_name")
+                    artist_country = row_for_model.pop("artist_country")
+
+                    row_for_model["artist"] = {
+                        "name": artist_name,
+                        "country": artist_country
+                    }
                     deleted_album = AlbumID(**row)
 
                 else:
                     all_albums.append(row)
 
-        if deleted_album:
+        if deleted_album and delete_row:
             with open(data_base, mode = "w", newline="") as csvfile:
                 writer = csv.DictWriter(csvfile, fieldnames=column_fields)
                 writer.writeheader()
@@ -201,7 +213,7 @@ def delete_album(album_id: str):
                 if not file_exists:
                     writer.writeheader()
 
-                writer.writerow(deleted_album.model_dump())
+                writer.writerow(delete_row)
 
             return deleted_album
 
