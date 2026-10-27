@@ -168,7 +168,7 @@ def update_album_edition(album_id: str, new_edition: str):
                         "name": artist_name,
                         "country": artist_country
                     }
-                    updated_album =  AlbumID(**row)
+                    updated_album =  AlbumID(**row_for_model)
 
                 all_albums.append(row)
 
