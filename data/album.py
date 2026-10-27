@@ -1,7 +1,6 @@
 import csv
 import os.path
 
-from starlette.exceptions import HTTPException
 
 from enums.ActiveStatus import ActiveStatus
 from models.album import AlbumBase, AlbumID
@@ -87,11 +86,22 @@ def read_all_albums():
 
 def show_all_deleted_albums():
     try:
-        with open(delete_data_base)as csvfile:
+        with open(delete_data_base) as csvfile:
             reader = csv.DictReader(csvfile, fieldnames=column_fields)
-
             next(reader, None)
-            return [AlbumID(**row) for row in reader]
+
+            albums = []
+            for row in reader:
+                artist_name = row.pop("artist_name")
+                artist_country = row.pop("artist_country")
+
+                row["artist"] = {
+                    "name": artist_name,
+                    "country": artist_country
+                }
+
+                albums.append(AlbumID(**row))
+            return albums
     except (FileNotFoundError, ValueError):
         return None
 
