@@ -14,7 +14,7 @@ def create_artist(artist: Artist):
 
 
 @router.get("/show", status_code=status.HTTP_200_OK,response_model=list[ArtistID], response_description="Showing all artists")
-def show_all_albums():
+def show_all_artist():
     artist = data_artist.read_all_list()
     if artist:
         return artist
