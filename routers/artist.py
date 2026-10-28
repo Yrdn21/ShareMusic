@@ -31,7 +31,7 @@ def show_one_artist_by_id(artist_id: int):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No artists found")
 
 
-@router.get("/{artist_name}", status_code=status.HTTP_200_OK, response_model=ArtistID, response_description = "Showing the artist with the matching name")
+@router.get("/search/{artist_name}", status_code=status.HTTP_200_OK, response_model=ArtistID, response_description = "Showing the artist with the matching name")
 def show_one_artist_by_name(artist_name: str):
     artist = data_artist.read_artist_by_name(artist_name)
     if artist:

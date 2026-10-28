@@ -94,7 +94,7 @@ def read_artist_by_name(artist_name: str):
             reader = csv.DictReader(csvfile, fieldnames=column_fields)
             next(reader, None)
             for row in reader:
-                if int(row["name"].lower()) == artist_name.lower():
+                if (row["name"].lower()) == artist_name.lower():
                     return ArtistID(**row)
             return None
     except (FileNotFoundError, ValueError):
