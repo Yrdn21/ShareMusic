@@ -1,5 +1,6 @@
 import csv
 import os.path
+import json
 
 
 from enums.ActiveStatus import ActiveStatus
@@ -48,6 +49,7 @@ def write_album_into_csv(register: AlbumID):
 
         data["artist_name"] = artist_data["name"]
         data["artist_country"] = artist_data["country"]
+        data["songs"] = json.dumps(data["songs"])
 
         writer.writerow(data)
 
@@ -77,6 +79,7 @@ def read_all_albums():
                     "name": artist_name,
                     "country": artist_country
                 }
+                row["songs"] = json.loads(row["songs"])
 
                 albums.append(AlbumID(**row))
             return albums
@@ -99,6 +102,7 @@ def show_all_deleted_albums():
                     "name": artist_name,
                     "country": artist_country
                 }
+                row["songs"] = json.loads(row["songs"])
 
                 albums.append(AlbumID(**row))
             return albums
@@ -121,6 +125,7 @@ def read_one_album_by_id(album_id: str):
                         "name": artist_name,
                         "country": artist_country
                     }
+                    row["songs"] = json.loads(row["songs"])
                     return AlbumID(**row)
             return None
     except (FileNotFoundError, ValueError):
@@ -141,6 +146,7 @@ def find_album_by_name(album_name: str):
                         "name": artist_name,
                         "country": artist_country
                     }
+                    row["songs"] = json.loads(row["songs"])
                     return AlbumID(**row)
             return None
     except (FileNotFoundError, ValueError):
@@ -168,6 +174,7 @@ def update_album_edition(album_id: str, new_edition: str):
                         "name": artist_name,
                         "country": artist_country
                     }
+                    row_for_model["songs"] = json.loads(row_for_model["songs"])
                     updated_album =  AlbumID(**row_for_model)
 
                 all_albums.append(row)
@@ -208,6 +215,7 @@ def delete_album(album_id: str):
                         "name": artist_name,
                         "country": artist_country
                     }
+                    row_for_model["songs"] = json.loads(row_for_model["songs"])
                     deleted_album = AlbumID(**row_for_model)
 
                 else:
