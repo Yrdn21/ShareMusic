@@ -76,9 +76,9 @@ def delete_song(song_id: int):
             next(reader, None)
             for row in reader:
                 if int(row["song_id"]) == song_id:
-                    deleted_song = ArtistID(**row)
+                    deleted_song = SongID(**row)
                 else:
-                    all_artist.append(row)
+                    all_songs.append(row)
 
             if deleted_song:
                 with open(data_base, "w", newline="") as csvfile:
