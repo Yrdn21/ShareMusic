@@ -1,11 +1,14 @@
 import csv
 import os.path
+import json
 
 
 from models.artist import Artist, ArtistID
 
 
 data_base = "artist.csv"
+delete_data_base = "deleted_artist.csv"
+
 column_fields = [
     "artist_id",
     "name",
@@ -23,17 +26,20 @@ def artist_auto_id():
         return 1
 
 
-def create_artist(register: Artist) -> ArtistID:
-    new_id = artist_auto_id()
-    new_artist = ArtistID(artist_id=new_id, **register.model_dump())
-
+def write_artist_into_csv(register: ArtistID):
     file_exists = os.path.isfile(data_base) and os.path.getsize(data_base) > 0
     with open(data_base, "a", newline="") as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=column_fields)
+
         if not file_exists:
             writer.writeheader()
-        writer.writerow(new_artist.model_dump())
+        writer.writerow(register.model_dump())
 
+
+def create_artist(register: Artist):
+    new_id = artist_auto_id()
+    new_artist = ArtistID(artist_id=new_id, **register.model_dump())
+    write_artist_into_csv(new_artist)
     return new_artist
 
 
@@ -45,6 +51,29 @@ def read_all_list():
             return [ArtistID(**row) for row in reader]
     except (FileNotFoundError, ValueError):
         return []
+
+
+def show_all_deleted_artists():
+    try:
+        with open(delete_data_base) as csvfile:
+            reader = csv.DictReader(csvfile, fieldnames=column_fields)
+            next(reader, None)
+
+            artist = []
+            for row in reader:
+                artist_name = row.pop("artist_name")
+                artist_country = row.pop("artist_country")
+
+                row["artist"] = {
+                    "name": artist_name,
+                    "country": artist_country
+                }
+                row["songs"] = json.loads(row["songs"])
+
+                artist.append(ArtistID(**row))
+            return artist
+    except (FileNotFoundError, ValueError):
+        return None
 
 
 def read_artist_by_id(artist_id: int):
@@ -90,7 +119,7 @@ def update_artist(artist_id: int, updated_data: Artist):
             with open(data_base, "w", newline="") as csvfile:
                 writer = csv.DictWriter(csvfile, fieldnames=column_fields)
                 writer.writeheader()
-                writer.writerow(all_artist)
+                writer.writerows(all_artist)
 
         return updated_artist
     except (FileNotFoundError, ValueError):
@@ -100,22 +129,40 @@ def update_artist(artist_id: int, updated_data: Artist):
 def delete_artist(artist_id: int):
     deleted_artist = None
     all_artist = []
+    delete_row = None
+
     try:
-        with open(data_base, "r") as csvfile:
+        with open(data_base) as csvfile:
             reader = csv.DictReader(csvfile, fieldnames=column_fields)
             next(reader, None)
+
             for row in reader:
                 if int(row["artist_id"]) == artist_id:
+                    delete_row = row.copy()
+
+
                     deleted_artist = ArtistID(**row)
+
                 else:
                     all_artist.append(row)
 
-            if deleted_artist:
-                with open(data_base, "w", newline="") as csvfile:
-                    writer = csv.DictWriter(csvfile, fieldnames=column_fields)
+        if deleted_artist and delete_row:
+            with open(data_base, mode="w", newline="") as csvfile:
+                writer = csv.DictWriter(csvfile, fieldnames=column_fields)
+                writer.writeheader()
+                writer.writerows(all_artist)
+
+            file_exists = os.path.isfile(delete_data_base) and os.path.getsize(delete_data_base) > 0
+
+            with open(delete_data_base, mode="a", newline="") as csvfile:
+                writer = csv.DictWriter(csvfile, fieldnames=column_fields)
+
+                if not file_exists:
                     writer.writeheader()
-                    writer.writerow(all_artist)
+
+                writer.writerow(delete_row)
 
             return deleted_artist
+
     except (FileNotFoundError, ValueError):
         return None
