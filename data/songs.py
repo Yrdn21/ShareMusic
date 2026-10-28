@@ -21,16 +21,20 @@ def song_auto_id():
         return 1
 
 
-def create_song(register: Song) -> SongID:
-    new_id = song_auto_id()
-    new_song = SongID(song_id=new_id, **register.model_dump())
-
+def write_song_into_csv(register: SongID):
     file_exists = os.path.isfile(data_base) and os.path.getsize(data_base) > 0
     with open(data_base, "a", newline="") as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=column_fields)
+
         if not file_exists:
             writer.writeheader()
-        writer.writerow(new_song.model_dump())
+        writer.writerow(register.model_dump())
+
+
+def create_song(register: Song) -> SongID:
+    new_id = song_auto_id()
+    new_song = SongID(song_id=new_id, **register.model_dump())
+    write_song_into_csv(new_song)
     return new_song
 
 
@@ -63,7 +67,7 @@ def read_song_by_name(song_name: str):
             reader = csv.DictReader(csvfile, fieldnames=column_fields)
             next(reader, None)
             for row in reader:
-                if int(row["nombre"].lower()) == song_name.lower():
+                if row["nombre"].lower() == song_name.lower():
                     return SongID(**row)
             return None
     except (FileNotFoundError, ValueError):
@@ -80,6 +84,8 @@ def update_song(song_id: int, updated_data: Song):
             for row in reader:
                 if int(row["song_id"]) == song_id:
                     update_song = SongID(song_id=song_id, **updated_data.model_dump())
+                    all_songs.append(update_song.model_dump())
+                else:
                     all_songs.append(row)
 
         if update_song:

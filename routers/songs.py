@@ -9,7 +9,7 @@ router = APIRouter(prefix="/songs", tags=["Songs"])
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=SongID, response_description="The song has been created")
-def create_artist(song: Song):
+def create_song(song: Song):
     return data_songs.create_song(song)
 
 
@@ -31,7 +31,7 @@ def show_one_song_by_id(song_id: int):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No song found")
 
 
-@router.get("/{song_name}", status_code=status.HTTP_200_OK, response_model=SongID, response_description = "Showing the song with the matching name")
+@router.get("/search/{song_name}", status_code=status.HTTP_200_OK, response_model=SongID, response_description = "Showing the song with the matching name")
 def show_one_song_by_name(song_name: str):
     song = data_songs.read_song_by_name(song_name)
     if song:
