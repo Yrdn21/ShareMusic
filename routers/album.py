@@ -68,7 +68,7 @@ def update_album_status(album_id: str, new_edition: AlbumEditionUpdate):
 
 
 
-@router.delete("/{album_id}", status_code=status.HTTP_200_OK, response_model=AlbumID, response_description="The album has been deleted")
+@router.delete("/{album_id}/deletealbum", status_code=status.HTTP_200_OK, response_model=AlbumID, response_description="The album has been deleted")
 def delete_album_status(album_id: str):
     delete = album.delete_album(album_id)
 
