@@ -1,7 +1,7 @@
 import csv
 import os.path
 
-from data.album import column_fields
+
 from models.artist import Artist, ArtistID
 
 

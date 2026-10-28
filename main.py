@@ -1,10 +1,11 @@
 from fastapi import FastAPI
-from routers import album
 
+from models import artist
+from routers import album, song, artist
 
 app = FastAPI()
 
 
-app.include_router(album.router, prefix="/album", tags=["album"])
-app.include_router(album.router, prefix="/artist", tags=["artist"])
-app.include_router(album.router, prefix="/songs", tags=["songs"])
+app.include_router(album.router)
+app.include_router(artist.router)
+app.include_router(song.router)
