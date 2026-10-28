@@ -1,8 +1,11 @@
 import csv
 import os.path
+
 from models.songs import Song, SongID
 
 data_base = "songs.csv"
+delete_data_base = "deleted_songs.csv"
+
 column_fields = [
     "song_id",
     "nombre"
@@ -83,7 +86,7 @@ def update_song(song_id: int, updated_data: Song):
             with open(data_base, "w", newline="") as csvfile:
                 writer = csv.DictWriter(csvfile, fieldnames=column_fields)
                 writer.writeheader()
-                writer.writerow(all_songs)
+                writer.writerows(all_songs)
 
         return update_song
     except FileNotFoundError:
@@ -92,23 +95,40 @@ def update_song(song_id: int, updated_data: Song):
 
 def delete_song(song_id: int):
     deleted_song = None
-    all_songs = []
+    all_song = []
+    delete_row = None
+
     try:
-        with open(data_base, "r") as csvfile:
+        with open(data_base) as csvfile:
             reader = csv.DictReader(csvfile, fieldnames=column_fields)
             next(reader, None)
+
             for row in reader:
                 if int(row["song_id"]) == song_id:
-                    deleted_song = SongID(**row)
-                else:
-                    all_songs.append(row)
+                    delete_row = row.copy()
 
-            if deleted_song:
-                with open(data_base, "w", newline="") as csvfile:
-                    writer = csv.DictWriter(csvfile, fieldnames=column_fields)
+                    deleted_song = SongID(**row)
+
+                else:
+                    all_song.append(row)
+
+        if deleted_song and delete_row:
+            with open(data_base, mode="w", newline="") as csvfile:
+                writer = csv.DictWriter(csvfile, fieldnames=column_fields)
+                writer.writeheader()
+                writer.writerows(all_song)
+
+            file_exists = os.path.isfile(delete_data_base) and os.path.getsize(delete_data_base) > 0
+
+            with open(delete_data_base, mode="a", newline="") as csvfile:
+                writer = csv.DictWriter(csvfile, fieldnames=column_fields)
+
+                if not file_exists:
                     writer.writeheader()
-                    writer.writerow(all_songs)
+
+                writer.writerow(delete_row)
 
             return deleted_song
+
     except (FileNotFoundError, ValueError):
         return None

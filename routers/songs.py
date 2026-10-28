@@ -50,10 +50,11 @@ def update_song(song_id: int, song_data: Song):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="The update was not successful")
 
 
-@router.delete("/{song_id}/deletesong", status_code=status.HTTP_200_OK, response_model=SongID, response_description = "The song was deleted")
-def delete_song(song_id: int):
-    song = data_songs.delete_song(song_id)
-    if song:
-        return song
-    else:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="The delete was not successful")
+@router.delete("/{song_id}/deletesong", status_code=status.HTTP_200_OK, response_model=SongID, response_description="The song has been deleted")
+def delete_artist_status(song_id: int):
+    delete = data_songs.delete_song(song_id)
+
+    if not delete:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Artist not found")
+
+    return delete
