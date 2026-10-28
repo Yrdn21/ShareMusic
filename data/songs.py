@@ -31,7 +31,7 @@ def create_song(register: Song) -> SongID:
     return new_song
 
 
-def read_all_songs(song_id: int):
+def read_all_songs():
     try:
         with open(data_base, "r") as csvfile:
             reader = csv.DictReader(csvfile, fieldnames=column_fields)
