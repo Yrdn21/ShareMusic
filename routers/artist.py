@@ -50,7 +50,7 @@ def update_artist(artist_id: int, artist_data: Artist):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="The update was not successful")
 
 
-@router.delete("/{artist_id}/deleteartist", status_code=status.HTTP_204_NO_CONTENT, response_model=ArtistID, response_description = "The artist was deleted")
+@router.delete("/{artist_id}/deleteartist", status_code=status.HTTP_200_OK, response_model=ArtistID, response_description = "The artist was deleted")
 def delete_artist(artist_id: int):
     artist = data_artist.delete_artist(artist_id)
     if artist:
