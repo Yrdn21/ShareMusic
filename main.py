@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 
-from routers import album, song, artist
+from routers import album, songs, artist
 
 app = FastAPI()
 
 
 app.include_router(album.router)
 app.include_router(artist.router)
-app.include_router(song.router)
+app.include_router(songs.router)
