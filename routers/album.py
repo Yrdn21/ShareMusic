@@ -6,7 +6,7 @@ from data import album
 
 album_list: list[AlbumBase] = []
 
-router = APIRouter()
+router = APIRouter(prefix="/albums", tags=["Albums"])
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_description = "Album created successfully")
