@@ -51,7 +51,7 @@ def update_artist(artist_id: int, artist_data: Artist):
 
 
 @router.delete("/{artist_id}/deleteartist", status_code=status.HTTP_200_OK, response_model=ArtistID, response_description="The artist has been deleted")
-def delete_artist_status(artist_id: int):
+def delete_artist(artist_id: int):
     delete = data_artist.delete_artist(artist_id)
 
     if not delete:
