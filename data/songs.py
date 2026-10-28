@@ -44,6 +44,19 @@ def read_all_songs(song_id: int):
         return None
 
 
+def read_song_by_id(song_id: int):
+    try:
+        with open(data_base, "r") as csvfile:
+            reader = csv.DictReader(csvfile, fieldnames=column_fields)
+            next(reader, None)
+            for row in reader:
+                if int(row["song_id"]) == song_id:
+                    return SongID(**row)
+            return None
+    except (FileNotFoundError, ValueError):
+        return None
+
+
 def read_song_by_name(song_name: str):
     try:
         with open(data_base, "r") as csvfile:
