@@ -32,8 +32,8 @@ def show_one_artist_by_id(artist_id: int):
 
 
 @router.get("/{artist_name}", status_code=status.HTTP_200_OK, response_model=ArtistID, response_description = "Showing the artist with the matching name")
-def show_one_artist_by_name(album_name: str):
-    artist = data_artist.read_artist_by_name(album_name)
+def show_one_artist_by_name(artist_name: str):
+    artist = data_artist.read_artist_by_name(artist_name)
     if artist:
         return artist
     else:
@@ -42,8 +42,8 @@ def show_one_artist_by_name(album_name: str):
 
 
 @router.patch("/{artist_id}/update", status_code=status.HTTP_200_OK, response_model=ArtistID, response_description = "The artist was updated")
-def update_artist(album_id: int, artist_data: Artist):
-    artist = data_artist.update_artist(album_id, artist_data)
+def update_artist(artist_id: int, artist_data: Artist):
+    artist = data_artist.update_artist(artist_id, artist_data)
     if artist:
         return artist
     else:
