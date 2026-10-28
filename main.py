@@ -1,6 +1,5 @@
 from fastapi import FastAPI
 
-from models import artist
 from routers import album, song, artist
 
 app = FastAPI()

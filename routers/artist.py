@@ -23,8 +23,8 @@ def show_all_albums():
 
 
 @router.get("/{artist_id}", status_code=status.HTTP_200_OK, response_model=ArtistID, response_description = "Showing the artist with the matching id")
-def show_one_artist_by_id(album_id: int):
-    artist = data_artist.read_artist_by_id(album_id)
+def show_one_artist_by_id(artist_id: int):
+    artist = data_artist.read_artist_by_id(artist_id)
     if artist:
         return artist
     else:
