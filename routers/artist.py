@@ -8,7 +8,7 @@ import data.artist as data_artist
 router = APIRouter(prefix="/artist", tags=["Artist"])
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model=ArtistID)
+@router.post("/", status_code=status.HTTP_201_CREATED, response_model=ArtistID, response_description="The artist was created")
 def create_artist(artist: Artist):
     return data_artist.create_artist(artist)
 
