@@ -1,9 +1,8 @@
-from pydantic import BaseModel
+from typing import Optional
+from sqlmodel import SQLModel, Field
 
-
-class Song(BaseModel):
+class SongBase(SQLModel):
     nombre: str
 
-
-class SongID(Song):
-    song_id: int
+class SongID(SongBase, table=True):
+    song_id: Optional[int] = Field(default=None, primary_key=True)
