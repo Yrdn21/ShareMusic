@@ -26,5 +26,5 @@ class AlbumID(AlbumBase, table=True):
 class AlbumStatusUpdate(SQLModel):
     status: ActiveStatus
 
-class AlbumEditionUpdate(BaseModel):
+class AlbumEditionUpdate(SQLModel):
     edition: Edition
