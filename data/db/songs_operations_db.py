@@ -24,7 +24,7 @@ def show_one_song_db(song_id: int):
 
 def show_song_by_name_db(name: str):
     with Session(engine) as session:
-        statement = select(SongID).where(SongID.nombre.ilike())
+        statement = select(SongID).where(SongID.nombre.ilike(name))
         return session.exec(statement).first()
 
 
