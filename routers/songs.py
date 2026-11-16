@@ -11,14 +11,11 @@ def create_song(song: SongBase):
     return ops.create_song_db(song)
 
 
-@router.get("/show", status_code=status.HTTP_200_OK,response_model=list[SongID], response_description="Showing all songs")
+@router.get("/show", status_code=status.HTTP_200_OK, response_model=list[SongID], response_description="Showing all songs")
 def show_all_songs():
-    song = ops.show_all_songs()
-    if not song:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Song not found")
-    return song
+    return ops.show_all_songs()
 
-@router.get("/search/{song_name}", status_code=status.HTTP_200_OK, response_model=SongID, response_description = "Showing the song with the matching name")
+@router.get("/search", status_code=status.HTTP_200_OK, response_model=SongID, response_description="Showing the song with the matching name")
 def show_one_song_by_name(song_name: str):
     song = ops.show_song_by_name_db(song_name)
     if not song:

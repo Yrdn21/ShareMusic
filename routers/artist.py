@@ -12,15 +12,12 @@ def create_artist(artist: ArtistBase):
     return ops.create_artist_db(artist)
 
 
-@router.get("/show", status_code=status.HTTP_200_OK,response_model=list[ArtistID], response_description="Showing all artists")
+@router.get("/show", status_code=status.HTTP_200_OK, response_model=list[ArtistID], response_description="Showing all artists")
 def show_all_artist():
-    artist = ops.show_all_artist_db()
-    if not artist:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No artists found")
-    return artist
+    return ops.show_all_artist_db()
 
 
-@router.get("/search/{artist_name}", status_code=status.HTTP_200_OK, response_model=ArtistID, response_description = "Showing the artist with the matching name")
+@router.get("/search", status_code=status.HTTP_200_OK, response_model=ArtistID, response_description="Showing the artist with the matching name")
 def show_one_artist_by_name(artist_name: str):
     artist = ops.show_artist_by_name_db(artist_name)
     if not artist:

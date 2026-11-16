@@ -24,7 +24,7 @@ def show_one_song_db(song_id: int):
 
 def show_song_by_name_db(name: str):
     with Session(engine) as session:
-        statement = select(SongID).where(SongID.nombre.ilike(name))
+        statement = select(SongID).where(SongID.name.ilike(name))
         return session.exec(statement).first()
 
 
@@ -33,7 +33,7 @@ def update_song_db(song_id: int, updated_song: SongBase):
         song_db = session.get(SongID, song_id)
         if not song_db:
             return None
-        song_db.nombre = updated_song.nombre
+        song_db.nombre = updated_song.name
         session.add(song_db)
         session.commit()
         session.refresh(song_db)

@@ -7,7 +7,7 @@ from data.db import operations_db
 router = APIRouter(prefix="/albums", tags=["Albums"])
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED, response_description = "Album created successfully")
+@router.post("/", status_code=status.HTTP_201_CREATED, response_model=AlbumID, response_description = "Album created successfully")
 def create_album(new_album: AlbumBase):
     return operations_db.create_album_db(new_album)
 
@@ -41,7 +41,7 @@ def show_one_album(album_id: int):
 
 
 
-@router.patch("/{album_id}/edition", status_code=status.HTTP_200_OK, response_model=AlbumEditionUpdate, response_description="The edition of the album has been updated")
+@router.patch("/{album_id}/edition", status_code=status.HTTP_200_OK, response_model=AlbumID, response_description="The edition of the album has been updated")
 def update_album_status(album_id: int, new_edition: AlbumEditionUpdate):
     update = operations_db.update_album_edition_db(album_id, new_edition)
     if not update:
