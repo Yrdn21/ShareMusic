@@ -1,6 +1,6 @@
 from sqlmodel import Session, select
 from enums.ActiveStatus import ActiveStatus
-from models.album import AlbumID,AlbumBase, AlbumStatusUpdate
+from models.album import AlbumID,AlbumBase, AlbumEditionUpdate, AlbumStatusUpdate
 from .album import engine
 
 
@@ -37,17 +37,26 @@ def show_one_album_by_name_db(album_name: str):
         return session.exec(statement).first()
 
 
-def update_album_db(album_id: int, status_update:AlbumStatusUpdate):
+def update_album_edition_db(album_id: int, edition_update:AlbumEditionUpdate):
     with Session(engine) as session:
         album_db = session.get(AlbumID, album_id)
         if not album_db:
             return None
-        album_db.status = status_update.status
+
+        album_db.edition = edition_update.edition
         session.add(album_db)
         session.commit()
         session.refresh(album_db)
         return album_db
 
 def delete_album_db(album_id: int):
-    inactive_status = AlbumStatusUpdate (status = ActiveStatus.INACTIVE)
-    return update_album_db(album_id, inactive_status)
+    with Session(engine) as session:
+        album_db = session.get(AlbumID, album_id)
+        if not album_db:
+            return None
+
+        album_db.status = ActiveStatus.INACTIVE
+        session.add(album_db)
+        session.commit()
+        session.refresh(album_db)
+        return album_db
